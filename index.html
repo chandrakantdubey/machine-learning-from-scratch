@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive 12-Week Full-Stack & AI Mastery Roadmap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Slate & Amber -->
+    <!-- Application Structure Plan: The application is designed as an interactive timeline dashboard. The core structure is based on three main phases (Python, JS, Advanced Architectures), selected via tabs. Within each phase, users can select a specific week. This action dynamically updates a central content area, displaying the weekly project, technologies, and a visual focus chart. A modal provides a detailed day-by-day breakdown. This structure was chosen to transform the linear, text-heavy report into a non-linear, explorable experience. It allows users to quickly jump to relevant sections and digest the dense information in manageable, context-rich chunks, which is more effective for a developer audience than simple scrolling. -->
+    <!-- Visualization & Content Choices: The primary visualization is a Chart.js radar chart. Report Info: Weekly learning focus. Goal: Show the distribution of effort for a given week. Viz Method: Radar Chart. Interaction: Updates dynamically on week selection. Justification: A radar chart is ideal for comparing multiple metrics (Backend, Frontend, AI, DSA, etc.) for a single entity (the week), providing a quick, at-a-glance understanding of the week's emphasis. The detailed daily plan is presented in a modal. Goal: Provide deep detail without cluttering the main UI. Method: JS-powered modal. Interaction: Click a button to open/close. Justification: This respects information hierarchy and progressive disclosure principles. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .tab-active {
+            border-color: #f59e0b; /* amber-500 */
+            color: #f59e0b;
+            background-color: #fffbeb; /* amber-50 */
+        }
+        .week-button-active {
+            background-color: #f59e0b; /* amber-500 */
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .modal-backdrop {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-content {
+            transition: transform 0.3s ease-in-out;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-5xl font-bold text-slate-900 mb-2">12-Week Full-Stack & AI Mastery Roadmap</h1>
+            <p class="text-md md:text-lg text-slate-600 max-w-3xl mx-auto">An interactive guide to elevate from a senior developer to a top-tier, architecturally-minded engineer through project-based learning.</p>
+        </header>
+
+        <main>
+            <div id="phase-tabs" class="flex flex-col sm:flex-row justify-center items-center gap-2 mb-8">
+                <button data-phase="1" class="phase-tab tab-active w-full sm:w-auto text-center font-semibold py-3 px-6 border-b-4 rounded-t-lg transition-colors duration-300">Part I: Python & AI Foundations</button>
+                <button data-phase="2" class="phase-tab w-full sm:w-auto text-center font-semibold py-3 px-6 border-b-4 border-transparent rounded-t-lg transition-colors duration-300">Part II: JS Ecosystem & Full-Stack</button>
+                <button data-phase="3" class="phase-tab w-full sm:w-auto text-center font-semibold py-3 px-6 border-b-4 border-transparent rounded-t-lg transition-colors duration-300">Part III: Advanced Architectures</button>
+            </div>
+
+            <div id="roadmap-content">
+                <!-- Content will be dynamically inserted here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Daily Plan -->
+    <div id="daily-plan-modal" class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
+        <div class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto transform scale-95">
+            <div class="sticky top-0 bg-white border-b p-4 flex justify-between items-center z-10">
+                <h3 id="modal-title" class="text-xl font-bold text-slate-900"></h3>
+                <button id="close-modal-btn" class="text-slate-500 hover:text-slate-800 transition-colors">
+                    <span class="text-2xl">&times;</span>
+                </button>
+            </div>
+            <div id="modal-body" class="p-6 md:p-8">
+                <!-- Daily plan content will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const roadmapData = {
+            1: {
+                phase: 1,
+                theme: "Advanced FastAPI & DB Foundations",
+                project: {
+                    title: "AI Content Summarizer & Keyword Extractor SaaS",
+                    description: "A web service where users submit a URL or text to get an AI-generated summary and keywords, with results persisted in a database. Monetizable via a tiered API access model.",
+                },
+                tech: ["FastAPI", "SQLModel", "PostgreSQL", "OpenAI API", "Docker"],
+                focus: [5, 1, 3, 3, 2], // BE, FE, AI, DSA, SysDesign
+                dailyPlan: [
+                    { day: 1, learn: "FastAPI core concepts, async/await, Pydantic basics, Docker setup.", dsa: "Arrays: Two Sum, Best Time to Buy/Sell Stock.", resources: [ { title: "FastAPI Official Tutorial", url: "https://fastapi.tiangolo.com/tutorial/" }, { title: "Python asyncio Docs", url: "https://docs.python.org/3/library/asyncio.html" }, { title: "Docker Get Started Guide", url: "https://docs.docker.com/get-started/" }, { title: "LeetCode: Two Sum", url: "https://leetcode.com/problems/two-sum/" } ] },
+                    { day: 2, learn: "Advanced Pydantic data modeling, SQLModel for DB schema definition.", dsa: "Arrays: Contains Duplicate, Product of Array Except Self.", resources: [ { title: "Pydantic Models", url: "https://docs.pydantic.dev/latest/usage/models/" }, { title: "SQLModel Tutorial", url: "https://sqlmodel.tiangolo.com/" }, { title: "LeetCode: Contains Duplicate", url: "https://leetcode.com/problems/contains-duplicate/" } ] },
+                    { day: 3, learn: "Master FastAPI's Dependency Injection system for managing DB sessions.", dsa: "Strings: Valid Anagram, Valid Parentheses.", resources: [ { title: "FastAPI Dependency Injection", url: "https://fastapi.tiangolo.com/tutorial/dependencies/" }, { title: "Understanding Python's 'yield'", url: "https://realpython.com/introduction-to-python-generators/" }, { title: "LeetCode: Valid Parentheses", url: "https://leetcode.com/problems/valid-parentheses/" } ] },
+                    { day: 4, learn: "Integrate OpenAI API for summarization. Securely manage API keys.", sys: "Requirements Gathering & Capacity Estimation (URL Shortener).", resources: [ { title: "OpenAI API Documentation", url: "https://platform.openai.com/docs/api-reference" }, { title: "FastAPI Settings Management", url: "https://fastapi.tiangolo.com/advanced/settings/" }, { title: "System Design: URL Shortener", url: "https://www.educative.io/courses/grokking-the-system-design-interview/m2G48X18jPl" } ] },
+                    { day: 5, learn: "Build full CRUD endpoints for user history. Implement robust error handling.", dsa: "Strings: Longest Substring Without Repeating Characters.", resources: [ { title: "FastAPI Bigger Applications Guide", url: "https://fastapi.tiangolo.com/tutorial/bigger-applications/" }, { title: "FastAPI Exception Handling", url: "https://fastapi.tiangolo.com/tutorial/handling-errors/" }, { title: "LeetCode: Longest Substring Without Repeating Characters", url: "https://leetcode.com/problems/longest-substring-without-repeating-characters/" } ] },
+                    { day: 6, learn: "Containerize the application with Docker and orchestrate with Docker Compose.", sys: "Back-of-the-envelope calculations for storage and QPS.", resources: [ { title: "Dockerizing a FastAPI Application", url: "https://testdriven.io/blog/dockerizing-fastapi-with-postgres-gunicorn-and-uvicorn/" }, { title: "Docker Compose Overview", url: "https://docs.docker.com/compose/" }, { title: "System Design Primer: Estimation", url: "https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/basics/estimation.md" } ] },
+                    { day: 7, learn: "Code review, refactoring, and exploring auto-generated OpenAPI documentation.", dsa: "Weekly review and catch-up.", resources: [ { title: "FastAPI OpenAPI Docs", url: "https://fastapi.tiangolo.com/tutorial/first-steps/#interactive-api-docs" }, { title: "Google Python Style Guide", url: "https://google.github.io/styleguide/pyguide.html" } ] },
+                ]
+            },
+            2: {
+                phase: 1,
+                theme: "Real-Time Applications with WebSockets",
+                project: {
+                    title: "Live Financial Market Data Dashboard",
+                    description: "A service streaming live stock data to clients via WebSockets, with backend analysis for real-time anomaly alerts. Monetizable via premium data subscriptions.",
+                },
+                tech: ["FastAPI WebSockets", "Next.js", "Financial API", "Docker"],
+                focus: [5, 2, 2, 3, 2],
+                dailyPlan: [
+                    { day: 1, learn: "WebSocket protocol fundamentals. Implement a basic echo server in FastAPI.", dsa: "Hash Tables: Efficient lookups and frequency counting.", resources: [ { title: "FastAPI WebSockets", url: "https://fastapi.tiangolo.com/advanced/websockets/" }, { title: "MDN: WebSockets API", url: "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API" } ] },
+                    { day: 2, learn: "Build a connection manager to handle multiple simultaneous WebSocket clients.", dsa: "Hash Tables: Ransom Note, Group Anagrams.", resources: [ { title: "Managing WebSockets in FastAPI (Blog)", url: "https://ably.com/blog/web-app-websockets-fastapi" }, { title: "LeetCode: Group Anagrams", url: "https://leetcode.com/problems/group-anagrams/" } ] },
+                    { day: 3, learn: "Create a minimal Next.js frontend client to connect and display streaming data.", dsa: "Recursion: Factorials, Fibonacci numbers.", resources: [ { title: "Next.js Getting Started", url: "https://nextjs.org/docs/getting-started" }, { title: "Connecting to WebSockets from the Browser", url: "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" } ] },
+                    { day: 4, learn: "Integrate a live financial data stream using an asynchronous background task.", sys: "High-Level Design (Twitter Feed).", resources: [ { title: "FastAPI Background Tasks", url: "https://fastapi.tiangolo.com/tutorial/background-tasks/" }, { title: "Alpha Vantage API (Example)", url: "https://www.alphavantage.co/documentation/" }, { title: "System Design: Twitter Feed", url: "https://www.educative.io/courses/grokking-the-system-design-interview/m2G48X18jPl" } ] },
+                    { day: 5, learn: "Implement backend anomaly detection logic (e.g., moving average) to push alerts.", dsa: "Recursion: Tree traversals (pre-order, in-order, post-order).", resources: [ { title: "Intro to Time Series Anomaly Detection", url: "https://www.influxdata.com/blog/time-series-anomaly-detection-overview/" }, { title: "LeetCode: Binary Tree Inorder Traversal", url: "https://leetcode.com/problems/binary-tree-inorder-traversal/" } ] },
+                    { day: 6, learn: "Handle graceful disconnects and implement robust error handling for external API.", sys: "Database Design: SQL vs. NoSQL trade-offs for a social feed.", resources: [ { title: "FastAPI WebSocket Disconnects", url: "https://fastapi.tiangolo.com/advanced/websockets/#handling-disconnections-and-multiple-clients" }, { title: "System Design: SQL vs NoSQL", url: "https://www.mongodb.com/nosql-explained/sql-vs-nosql" } ] },
+                    { day: 7, learn: "End-to-end testing with multiple clients. Refactor for modularity.", dsa: "Weekly review and catch-up.", resources: [ { title: "Refactoring Guru", url: "https://refactoring.guru/refactoring/techniques" } ] },
+                ]
+            },
+            3: {
+                phase: 1,
+                theme: "Deploying Custom Machine Learning Models",
+                project: {
+                    title: "Sentiment Analysis API for Customer Feedback",
+                    description: "A microservice that analyzes the sentiment of text. Involves training an NLP model, serializing it, and deploying it as a containerized API. Monetizable as a B2B API.",
+                },
+                tech: ["Scikit-learn", "Pandas", "FastAPI", "Docker"],
+                focus: [4, 0, 5, 3, 2],
+                dailyPlan: [
+                    { day: 1, learn: "Train a classification model using Scikit-learn. Serialize the trained model to disk.", dsa: "Sorting & Searching: Merge Sort, Quick Sort.", resources: [ { title: "Scikit-learn Tutorial", url: "https://scikit-learn.org/stable/tutorial/index.html" }, { title: "Saving and Loading Models", url: "https://scikit-learn.org/stable/model_persistence.html" } ] },
+                    { day: 2, learn: "Set up a FastAPI inference API. Load the serialized model on application startup.", dsa: "Implement Binary Search. Solve 'Search in Rotated Sorted Array'.", resources: [ { title: "Deploying ML Models with FastAPI", url: "https://www.kdnuggets.com/2021/01/deploy-machine-learning-models-fastapi.html" }, { title: "LeetCode: Search in Rotated Sorted Array", url: "https://leetcode.com/problems/search-in-rotated-sorted-array/" } ] },
+                    { day: 3, learn: "Create the `/predict` endpoint to perform sentiment analysis on incoming text.", dsa: "Linked Lists: Insertion, deletion, and traversal.", resources: [ { title: "Building a ML API with FastAPI", url: "https://towardsdatascience.com/build-and-host-a-machine-learning-api-with-fastapi-26d141feb7f2" } ] },
+                    { day: 4, learn: "Containerize the ML model and FastAPI server into a single, portable Docker image.", sys: "Caching Strategies (write-through, write-back, cache-aside).", resources: [ { title: "Dockerizing a Python ML App", url: "https://www.docker.com/blog/containerize-your-python-machine-learning-apps/" }, { title: "System Design: Caching", url: "https://aws.amazon.com/caching/strategies/" } ] },
+                    { day: 5, learn: "Understand how FastAPI handles synchronous ML model inference in async endpoints.", dsa: "Linked Lists: Reverse Linked List, Merge Two Sorted Lists.", resources: [ { title: "FastAPI: Async vs Sync", url: "https://fastapi.tiangolo.com/async/" }, { title: "LeetCode: Reverse Linked List", url: "https://leetcode.com/problems/reverse-linked-list/" } ] },
+                    { day: 6, learn: "Thoroughly test the API endpoint using Swagger UI. Write unit tests for prediction logic.", sys: "Load Balancing Algorithms (Round Robin, Least Connections).", resources: [ { title: "Testing FastAPI Applications", url: "https://fastapi.tiangolo.com/tutorial/testing/" }, { title: "System Design: Load Balancing", url: "https://www.nginx.com/resources/glossary/load-balancing/" } ] },
+                    { day: 7, learn: "Review the entire ML deployment pipeline. Discuss model versioning and retraining.", dsa: "Weekly review and catch-up.", resources: [ { title: "MLOps Principles", url: "https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning" } ] },
+                ]
+            },
+            4: {
+                phase: 1,
+                theme: "Building a Recommendation Engine",
+                project: {
+                    title: "Personalized Content Recommendation Service",
+                    description: "An API providing personalized article recommendations using a hybrid approach (collaborative and content-based filtering). Monetizable by selling to content platforms.",
+                },
+                tech: ["Surprise", "Scikit-learn", "Pandas", "FastAPI"],
+                focus: [4, 0, 5, 3, 2],
+                dailyPlan: [
+                    { day: 1, learn: "Study recommendation system theory: collaborative vs. content-based filtering.", dsa: "Stacks: LIFO principle and core operations.", resources: [ { title: "Google's Intro to Rec Systems", url: "https://developers.google.com/machine-learning/recommendation" }, { title: "Overview of Recommender Systems", url: "https://towardsdatascience.com/introduction-to-recommender-systems-6c66cf15ada" } ] },
+                    { day: 2, learn: "Implement content-based filtering using TF-IDF and cosine similarity.", dsa: "Stacks: Valid Parentheses.", resources: [ { title: "Content-Based Filtering Tutorial", url: "https://www.datacamp.com/tutorial/recommender-systems-python" }, { title: "TF-IDF in Scikit-learn", url: "https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html" } ] },
+                    { day: 3, learn: "Implement collaborative filtering using the Surprise library and SVD algorithm.", dsa: "Queues: FIFO principle. Implement Queue using Stacks.", resources: [ { title: "Surprise Library Documentation", url: "https://surprise.readthedocs.io/en/stable/" }, { title: "Collaborative Filtering Explained", url: "https://developers.google.com/machine-learning/recommendation/collaborative/basics" } ] },
+                    { day: 4, learn: "Design the recommendation API endpoint in FastAPI. Implement a hybrid weighting strategy.", sys: "Data Partitioning / Sharding Strategies.", resources: [ { title: "Building a Hybrid Recommender", url: "https://towardsdatascience.com/how-to-build-a-hybrid-recommender-system-with-python-4b5891128884" }, { title: "System Design: Sharding", url: "https://www.educative.io/courses/grokking-the-system-design-interview/m2G48X18jPl" } ] },
+                    { day: 5, learn: "Integrate PostgreSQL to store article metadata and user interaction data.", dsa: "Trees: Basic terminology (root, leaf, node, etc.).", resources: [ { title: "Using PostgreSQL with Python", url: "https://www.psycopg.org/docs/" } ] },
+                    { day: 6, learn: "Design and implement a simple model retraining strategy triggered by an API call.", sys: "Distributed Systems: CAP Theorem.", resources: [ { title: "The CAP Theorem", url: "https://www.ibm.com/cloud/learn/cap-theorem" } ] },
+                    { day: 7, learn: "End-to-end testing of the recommendation quality. Document the API.", dsa: "Weekly review and catch-up.", resources: [ { title: "Evaluating Recommender Systems", url: "https://towardsdatascience.com/evaluation-metrics-for-recommender-systems-df56c6611093" } ] },
+                ]
+            },
+            5: {
+                phase: 2,
+                theme: "Enterprise Backends with NestJS & GraphQL",
+                project: {
+                    title: "Niche CRM for Freelancers (GraphQL API)",
+                    description: "A backend for a CRM to manage clients, projects, and tasks, built entirely with a flexible GraphQL API. Monetizable as a monthly SaaS subscription.",
+                },
+                tech: ["NestJS", "GraphQL", "TypeORM", "PostgreSQL", "Docker"],
+                focus: [5, 0, 0, 3, 3],
+                dailyPlan: [
+                    { day: 1, learn: "NestJS fundamentals: Modules, Controllers, Providers. Contrast with Express.js.", dsa: "Trees: Max Depth of Binary Tree, Invert Binary Tree.", resources: [ { title: "NestJS Documentation", url: "https://docs.nestjs.com/" }, { title: "LeetCode: Maximum Depth of Binary Tree", url: "https://leetcode.com/problems/maximum-depth-of-binary-tree/" } ] },
+                    { day: 2, learn: "Integrate GraphQL into NestJS using the code-first approach. Create first query.", dsa: "Trees: Balanced Binary Tree, Diameter of Binary Tree.", resources: [ { title: "NestJS GraphQL Quick Start", url: "https://docs.nestjs.com/graphql/quick-start" }, { title: "Introduction to GraphQL", url: "https://graphql.org/learn/" } ] },
+                    { day: 3, learn: "Connect to PostgreSQL using TypeORM. Define database entities and repositories.", dsa: "Trees: Lowest Common Ancestor of a BST.", resources: [ { title: "NestJS TypeORM Integration", url: "https://docs.nestjs.com/techniques/database" }, { title: "TypeORM Documentation", url: "https://typeorm.io/" } ] },
+                    { day: 4, learn: "Build out the full suite of GraphQL queries and mutations for the CRM.", sys: "Design a Ride-Sharing Service (Uber).", resources: [ { title: "GraphQL Queries and Mutations", url: "https://graphql.org/learn/queries/" }, { title: "System Design: Uber", url: "https://www.educative.io/courses/grokking-the-system-design-interview/m2G48X18jPl" } ] },
+                    { day: 5, learn: "Implement the DataLoader pattern to solve the N+1 query problem in GraphQL.", dsa: "Trees: Binary Tree Level Order Traversal (BFS).", resources: [ { title: "Solving the N+1 Problem with DataLoader", url: "https://docs.nestjs.com/graphql/data-loader" }, { title: "GraphQL DataLoader", url: "https://github.com/graphql/dataloader" } ] },
+                    { day: 6, learn: "Add real-time functionality using GraphQL Subscriptions for project updates.", sys: "Uber Deep Dive: Geospatial indexing and data consistency.", resources: [ { title: "NestJS GraphQL Subscriptions", url: "https://docs.nestjs.com/graphql/subscriptions" }, { title: "Geospatial Indexing", url: "https://www.elastic.co/what-is/geospatial-indexing" } ] },
+                    { day: 7, learn: "Test the entire GraphQL API using the GraphQL Playground. Review modular structure.", dsa: "Weekly review and catch-up.", resources: [ { title: "GraphQL Playground", url: "https://github.com/graphql/graphql-playground" } ] },
+                ]
+            },
+            6: {
+                phase: 2,
+                theme: "Authentication & Authorization",
+                project: {
+                    title: "Secure Membership Platform for Paid Newsletter",
+                    description: "A complete backend for a premium content platform with user registration, login, and role-based access control (RBAC) using JWTs. Core of any SaaS product.",
+                },
+                tech: ["NestJS", "Passport.js", "JWT", "Bcrypt", "TypeORM"],
+                focus: [5, 0, 0, 3, 3],
+                dailyPlan: [
+                    { day: 1, learn: "Authentication fundamentals. Implement secure password hashing using bcrypt.", dsa: "Heaps: K Closest Points to Origin.", resources: [ { title: "NestJS Authentication", url: "https://docs.nestjs.com/security/authentication" }, { title: "Bcrypt Library", url: "https://www.npmjs.com/package/bcrypt" } ] },
+                    { day: 2, learn: "Implement username/password authentication using Passport.js's LocalStrategy.", dsa: "Heaps: Find Median from Data Stream.", resources: [ { title: "Passport.js Local Strategy", url: "http://www.passportjs.org/packages/passport-local/" }, { title: "LeetCode: Find Median from Data Stream", url: "https://leetcode.com/problems/find-median-from-data-stream/" } ] },
+                    { day: 3, learn: "Issue signed JSON Web Tokens (JWTs) upon successful user login.", dsa: "Graphs: Adjacency List vs. Adjacency Matrix.", resources: [ { title: "NestJS JWT Module", url: "https://github.com/nestjs/jwt" }, { title: "Introduction to JWT", url: "https://jwt.io/introduction" } ] },
+                    { day: 4, learn: "Implement a JWTStrategy and use AuthGuards to protect specific API routes.", sys: "Design a Chat Application (WhatsApp).", resources: [ { title: "Passport.js JWT Strategy", url: "http://www.passportjs.org/packages/passport-jwt/" }, { title: "NestJS Guards", url: "https://docs.nestjs.com/guards" }, { title: "System Design: WhatsApp", url: "https://www.educative.io/courses/grokking-the-system-design-interview/m2G48X18jPl" } ] },
+                    { day: 5, learn: "Implement authorization with a custom RolesGuard for role-based access control.", dsa: "Graphs (BFS): Number of Islands, Rotting Oranges.", resources: [ { title: "NestJS Authorization", url: "https://docs.nestjs.com/security/authorization" }, { title: "LeetCode: Number of Islands", url: "https://leetcode.com/problems/number-of-islands/" } ] },
+                    { day: 6, learn: "Implement a refresh token strategy for improved security and user experience.", sys: "WhatsApp Deep Dive: 'Last seen' feature and offline message delivery.", resources: [ { title: "Handling Refresh Tokens", url: "https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/" } ] },
+                    { day: 7, learn: "Test the complete auth flow: registration, login, protected routes, token refresh.", dsa: "Weekly review and catch-up.", resources: [ { title: "Testing NestJS Applications", url: "https://docs.nestjs.com/fundamentals/testing" } ] },
+                ]
+            },
+            7: {
+                phase: 2,
+                theme: "Modern Frontend with Next.js",
+                project: {
+                    title: "AI-Powered Resume Parser (Full-Stack)",
+                    description: "A tool for recruiters to upload resumes, which are parsed by an AI backend. The frontend displays a structured summary for efficient screening. Monetizable as a SaaS for HR.",
+                },
+                tech: ["Next.js", "React", "Tailwind CSS", "FastAPI", "OpenAI API"],
+                focus: [2, 5, 2, 3, 2],
+                dailyPlan: [
+                    { day: 1, learn: "Next.js 15 App Router fundamentals. Server vs. Client Components.", dsa: "Graphs (DFS): Clone Graph.", resources: [ { title: "Next.js App Router", url: "https://nextjs.org/docs/app" }, { title: "React Server Components", url: "https://nextjs.org/docs/app/building-your-application/rendering/server-components" } ] },
+                    { day: 2, learn: "Style the UI with Tailwind CSS. Build reusable React components.", dsa: "Graphs (DFS): Course Schedule (Cycle Detection).", resources: [ { title: "Tailwind CSS with Next.js", url: "https://tailwindcss.com/docs/guides/nextjs" }, { title: "Thinking in React", url: "https://react.dev/learn/thinking-in-react" } ] },
+                    { day: 3, learn: "Master data fetching patterns in Next.js (server-side and client-side).", dsa: "Dynamic Programming: Memoization vs. Tabulation.", resources: [ { title: "Next.js Data Fetching", url: "https://nextjs.org/docs/app/building-your-application/data-fetching" } ] },
+                    { day: 4, learn: "Manage application state using React hooks (useState, useContext).", sys: "Design a Video Streaming Service (YouTube).", resources: [ { title: "React State Management", url: "https://react.dev/learn/managing-state" }, { title: "System Design: YouTube", url: "https://www.educative.io/courses/grokking-the-system-design-interview/m2G48X18jPl" } ] },
+                    { day: 5, learn: "Implement forms and data mutations using Next.js Server Actions.", dsa: "DP: Climbing Stairs, Coin Change.", resources: [ { title: "Next.js Server Actions", url: "https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations" }, { title: "LeetCode: Coin Change", url: "https://leetcode.com/problems/coin-change/" } ] },
+                    { day: 6, learn: "Connect to the auth service. Implement login/registration pages and protected routes.", sys: "YouTube Deep Dive: Adaptive bitrate streaming and recommendation engine.", resources: [ { title: "Next.js Authentication", url: "https://nextjs.org/docs/app/building-your-application/authentication" }, { title: "Adaptive Bitrate Streaming", url: "https://aws.amazon.com/streaming-video/what-is-adaptive-bitrate-streaming/" } ] },
+                    { day: 7, learn: "Optimize the application for production and deploy to a platform like Vercel.", dsa: "Weekly review and catch-up.", resources: [ { title: "Next.js Deployment", url: "https://nextjs.org/docs/app/building-your-application/deploying" }, { title: "Vercel", url: "https://vercel.com/" } ] },
+                ]
+            },
+            8: {
+                phase: 2,
+                theme: "Full-Stack AI Chatbot (RAG)",
+                project: {
+                    title: "Customer Support Chatbot with Knowledge Base",
+                    description: "A chatbot that answers questions based on uploaded documents, using the Retrieval-Augmented Generation (RAG) pattern. Monetizable as a 'Chat with your data' SaaS.",
+                },
+                tech: ["Vector DBs", "LangChain", "OpenAI API", "NestJS", "Next.js"],
+                focus: [3, 3, 5, 2, 3],
+                dailyPlan: [
+                    { day: 1, learn: "Understand RAG architecture and the role of vector databases in semantic search.", dsa: "Backtracking: Subsets, Combination Sum.", resources: [ { title: "What is RAG?", url: "https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/" }, { title: "What is a Vector Database?", url: "https://www.pinecone.io/learn/vector-database/" } ] },
+                    { day: 2, learn: "Backend: Implement document ingestion, chunking, embedding, and storage in a vector DB.", dsa: "Backtracking: Permutations.", resources: [ { title: "LangChain: Document Loaders", url: "https://python.langchain.com/docs/modules/data_connection/document_loaders/" }, { title: "OpenAI Embeddings API", url: "https://platform.openai.com/docs/guides/embeddings" } ] },
+                    { day: 3, learn: "Backend: Build the chat endpoint that retrieves context and generates an answer.", dsa: "Intervals: Insert Interval, Merge Intervals.", resources: [ { title: "LangChain: RAG Chains", url: "https://python.langchain.com/docs/use_cases/question_answering/" } ] },
+                    { day: 4, learn: "Frontend: Build a responsive and user-friendly chat interface in Next.js.", sys: "Design an E-commerce Website (Amazon).", resources: [ { title: "Building a Chat UI with React", url: "https://www.smashingmagazine.com/2021/03/building-chat-app-react-ably/" }, { title: "System Design: Amazon", url: "https://www.educative.io/courses/grokking-the-system-design-interview/m2G48X18jPl" } ] },
+                    { day: 5, learn: "Implement response streaming for a real-time 'typing' effect in the chat UI.", dsa: "Mixed review of medium-level problems.", resources: [ { title: "Vercel AI SDK for Streaming", url: "https://sdk.vercel.ai/docs" } ] },
+                    { day: 6, learn: "Full-stack integration and end-to-end testing of the entire RAG pipeline.", sys: "Amazon Deep Dive: Highly available inventory management.", resources: [ { title: "Designing for High Availability", url: "https://aws.amazon.com/architecture/well-architected/reliability-pillar/" } ] },
+                    { day: 7, learn: "Review and polish the application with loading indicators and error handling.", dsa: "Weekly review and catch-up.", resources: [ { title: "React Suspense for Data Fetching", url: "https://react.dev/reference/react/Suspense" } ] },
+                ]
+            },
+            9: {
+                phase: 3,
+                theme: "Introduction to Microservices",
+                project: {
+                    title: "E-commerce Backend (User, Product, Order Services)",
+                    description: "Decompose a monolithic e-commerce backend into three distinct, independent microservices, each with its own database and API, managed via Docker Compose.",
+                },
+                tech: ["NestJS", "Docker Compose"],
+                focus: [4, 0, 0, 2, 5],
+                dailyPlan: [
+                    { day: 1, learn: "Microservices principles: pros & cons, single responsibility, loose coupling.", dsa: "Trie: Implement Trie (Prefix Tree).", resources: [ { title: "Microservices.io", url: "https://microservices.io/" }, { title: "LeetCode: Implement Trie", url: "https://leetcode.com/problems/implement-trie-prefix-tree/" } ] },
+                    { day: 2, learn: "Build and containerize the standalone User service.", dsa: "Review medium-level graph problems.", resources: [ { title: "NestJS Microservices", url: "https://docs.nestjs.com/microservices/basics" } ] },
+                    { day: 3, learn: "Build and containerize the standalone Product service.", dsa: "Review medium-level tree problems.", resources: [ { title: "Building Microservices with NestJS (Blog)", url: "https://blog.logrocket.com/building-microservices-nestjs-rabbitmq/" } ] },
+                    { day: 4, learn: "Build the Order service, introducing the challenge of inter-service communication.", sys: "Mock Interview 1 (Self-Critique): Design Twitter.", resources: [ { title: "System Design Interview Prep", url: "https://github.com/donnemartin/system-design-primer" } ] },
+                    { day: 5, learn: "Implement synchronous (HTTP) inter-service communication and analyze its drawbacks.", dsa: "Review medium-level DP problems.", resources: [ { title: "NestJS HTTP Module", url: "https://docs.nestjs.com/techniques/http-module" }, { title: "Synchronous vs Asynchronous Communication", url: "https://www.ibm.com/cloud/blog/synchronous-vs-asynchronous-messaging" } ] },
+                    { day: 6, learn: "Use Docker Compose to define and run the entire multi-service system locally.", sys: "Review mock interview performance, identify weak areas.", resources: [ { title: "Docker Compose for Microservices", url: "https://docs.docker.com/compose/microservices/" } ] },
+                    { day: 7, learn: "Review the system, reflect on the brittleness of synchronous calls, and prepare for async.", dsa: "Weekly review and catch-up.", resources: [ { title: "The Challenges of Microservices", url: "https://www.nginx.com/blog/introduction-to-microservices/" } ] },
+                ]
+            },
+            10: {
+                phase: 3,
+                theme: "Inter-Service Communication & API Gateway",
+                project: {
+                    title: "E-commerce System with API Gateway & Events",
+                    description: "Refactor the microservices to use asynchronous, event-based communication with RabbitMQ. Build an API Gateway as a single entry point for all clients.",
+                },
+                tech: ["RabbitMQ", "API Gateway Pattern", "NestJS"],
+                focus: [4, 0, 0, 2, 5],
+                dailyPlan: [
+                    { day: 1, learn: "Message broker concepts: queues, exchanges, pub/sub pattern. Add RabbitMQ.", dsa: "Timed practice: medium-level problems (25-30 min).", resources: [ { title: "RabbitMQ Tutorials", url: "https://www.rabbitmq.com/getstarted.html" }, { title: "NestJS RabbitMQ Integration", url: "https://docs.nestjs.com/microservices/rabbitmq" } ] },
+                    { day: 2, learn: "Refactor the Order service to publish an `order_created` event instead of making HTTP calls.", dsa: "Continue timed medium-level practice.", resources: [ { title: "Publish/Subscribe Pattern", url: "https://microservices.io/patterns/communication-style/publish-subscribe.html" } ] },
+                    { day: 3, learn: "Refactor the Product service to consume the `order_created` event and update inventory.", dsa: "Continue timed medium-level practice.", resources: [ { title: "Event-Driven Architecture", url: "https://aws.amazon.com/event-driven-architecture/" } ] },
+                    { day: 4, learn: "Study the API Gateway pattern. Build a simple gateway service in NestJS.", sys: "Mock Interview 2 (Peer Review): Design Uber.", resources: [ { title: "API Gateway Pattern", url: "https://microservices.io/patterns/apigateway.html" }, { title: "Building an API Gateway with NestJS", url: "https://docs.nestjs.com/microservices/api-gateway" } ] },
+                    { day: 5, learn: "Implement request routing in the API Gateway to forward traffic to the correct service.", dsa: "Hard-level problems: Merge k Sorted Lists.", resources: [ { title: "LeetCode: Merge k Sorted Lists", url: "https://leetcode.com/problems/merge-k-sorted-lists/" } ] },
+                    { day: 6, learn: "Centralize authentication logic (JWT validation) in the API Gateway.", sys: "Review mock interview performance, focus on trade-offs.", resources: [ { title: "API Gateway Authentication", url: "https://nordicapis.com/api-security-fundamentals-securing-the-api-gateway/" } ] },
+                    { day: 7, learn: "Review the complete, decoupled, and robust microservices architecture.", dsa: "Weekly review and catch-up.", resources: [ { title: "Benefits of Event-Driven Architecture", url: "https://solace.com/learn/event-driven-architecture/benefits/" } ] },
+                ]
+            },
+            11: {
+                phase: 3,
+                theme: "Advanced System Design in Practice",
+                project: {
+                    title: "Social Media Analytics Dashboard",
+                    description: "A system to ingest a high-volume stream of social media posts, perform real-time sentiment analysis, and display analytics on a dashboard using a time-series database.",
+                },
+                tech: ["TimescaleDB", "FastAPI", "NestJS", "WebSockets", "Next.js"],
+                focus: [3, 2, 1, 1, 5],
+                dailyPlan: [
+                    { day: 1, learn: "Design the entire system architecture on a whiteboard before writing code.", dsa: "Hard: Trapping Rain Water.", resources: [ { title: "C4 Model for Software Architecture", url: "https://c4model.com/" }, { title: "LeetCode: Trapping Rain Water", url: "https://leetcode.com/problems/trapping-rain-water/" } ] },
+                    { day: 2, learn: "Build a high-performance data ingestion service using FastAPI.", dsa: "Hard: Largest Rectangle in Histogram.", resources: [ { title: "Optimizing FastAPI Performance", url: "https://fastapi.tiangolo.com/advanced/performance/" } ] },
+                    { day: 3, learn: "Build a real-time processing pipeline using a message queue and worker processes.", dsa: "Hard: Minimum Window Substring.", resources: [ { title: "Data Processing Pipelines", url: "https://aws.amazon.com/streaming-data/what-is-a-data-pipeline/" } ] },
+                    { day: 4, learn: "Implement a specialized time-series database (TimescaleDB) for efficient analytics queries.", sys: "Mock Interview 3 (Data-Heavy): Design a Web Crawler.", resources: [ { title: "TimescaleDB Documentation", url: "https://docs.timescale.com/" }, { title: "System Design: Web Crawler", url: "https://www.educative.io/courses/grokking-the-system-design-interview/m2G48X18jPl" } ] },
+                    { day: 5, learn: "Build the analytics API and the real-time Next.js dashboard with WebSockets.", dsa: "Hard: Word Ladder.", resources: [ { title: "Building Dashboards with Next.js", url: "https://vercel.com/templates/next.js/nextjs-boilerplate" } ] },
+                    { day: 6, learn: "Analyze the system for scalability bottlenecks and plan scaling strategies.", sys: "Review mock interview performance, focus on scalability.", resources: [ { title: "Scalability Concepts", url: "https://lethain.com/introduction-to-architecting-systems-for-scale/" } ] },
+                    { day: 7, learn: "Conduct a project retrospective to analyze design decisions and challenges.", dsa: "Weekly review and catch-up.", resources: [ { title: "The Postmortem", url: "https://www.atlassian.com/incident-management/postmortem" } ] },
+                ]
+            },
+            12: {
+                phase: 3,
+                theme: "Capstone Project & Interview Prep",
+                project: {
+                    title: "AI-Driven Automated Code Review SaaS",
+                    description: "A full-stack app that integrates with GitHub. On a pull request, it uses an LLM to analyze code changes and posts feedback as a PR comment. Monetizable as a developer tool.",
+                },
+                tech: ["GitHub API", "Webhooks", "OpenAI API", "NestJS", "Next.js"],
+                focus: [3, 2, 3, 4, 4],
+                dailyPlan: [
+                    { day: 1, learn: "Design the full architecture for the AI code reviewer, including GitHub App setup.", dsa: "Final review of key algorithmic patterns.", resources: [ { title: "Building GitHub Apps", url: "https://docs.github.com/en/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps" } ] },
+                    { day: 2, learn: "Backend: Build the GitHub webhook listener and logic to call the OpenAI & GitHub APIs.", dsa: "Mock DSA Interview 1.", resources: [ { title: "Handling Webhooks", url: "https://docs.github.com/en/webhooks/handling-and-securing-webhooks/about-webhooks" } ] },
+                    { day: 3, learn: "Frontend: Build the user dashboard for connecting repos and managing the service.", dsa: "Mock DSA Interview 2.", resources: [ { title: "GitHub App Authentication", url: "https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/about-authentication-with-a-github-app" } ] },
+                    { day: 4, learn: "Complete the end-to-end integration and test with a real GitHub repository.", sys: "Final review of key system design patterns.", resources: [ { title: "System Design Patterns", url: "https://learn.microsoft.com/en-us/azure/architecture/patterns/" } ] },
+                    { day: 5, learn: "Intensive practice with two final system design mock interviews.", sys: "Mock System Design Interviews 4 & 5.", resources: [ { title: "System Design Interview Questions", url: "https://github.com/checkcheckzz/system-design-interview" } ] },
+                    { day: 6, learn: "Final mock DSA interview. Prepare for behavioral questions using the STAR method.", dsa: "Mock DSA Interview 3.", behavioral: "Practice STAR method.", resources: [ { title: "Mastering Behavioral Interviews", url: "https://www.coursera.org/articles/star-method-interview" } ] },
+                    { day: 7, learn: "Review all 12 projects for portfolio. Update resume. Plan job application strategy.", dsa: "Relax and prepare for interviews.", resources: [ { title: "Building a Developer Portfolio", url: "https://www.freecodecamp.org/news/how-to-build-a-developer-portfolio/" } ] },
+                ]
+            }
+        };
+
+        let currentWeek = 1;
+        let currentPhase = 1;
+        let focusChart;
+
+        const contentContainer = document.getElementById('roadmap-content');
+        const phaseTabs = document.querySelectorAll('.phase-tab');
+        const modal = document.getElementById('daily-plan-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+
+        const techIcons = {
+            "FastAPI": "🚀", "SQLModel": "💿", "PostgreSQL": "🐘", "OpenAI API": "🤖", "Docker": "🐳",
+            "Next.js": "🌐", "Financial API": "💹", "FastAPI WebSockets": "⚡", "Scikit-learn": "🧠", "Pandas": "🐼",
+            "Surprise": "🎁", "NestJS": "🐈", "GraphQL": "⚛️", "TypeORM": "🔄", "Passport.js": "🛡️",
+            "JWT": "🔑", "Bcrypt": "🔒", "React": "⚛️", "Tailwind CSS": "🎨", "Vector DBs": "🔗",
+            "LangChain": "🔗", "Docker Compose": "🐳", "RabbitMQ": "🐇", "API Gateway Pattern": "🚪",
+            "TimescaleDB": "⏳", "WebSockets": "⚡", "GitHub API": "🐙", "Webhooks": "🎣"
+        };
+        
+        function createWeekButton(weekNumber) {
+            const button = document.createElement('button');
+            button.dataset.week = weekNumber;
+            button.className = `week-button text-sm sm:text-base font-semibold py-2 px-4 rounded-lg shadow-sm transition-all duration-200 ease-in-out ${weekNumber === currentWeek ? 'week-button-active' : 'bg-white hover:bg-slate-100'}`;
+            button.textContent = `Week ${weekNumber}`;
+            button.onclick = () => {
+                currentWeek = weekNumber;
+                renderPhaseContent(currentPhase);
+            };
+            return button;
+        }
+
+        function renderPhaseContent(phase) {
+            currentPhase = phase;
+            const weeksInPhase = Object.keys(roadmapData).filter(w => roadmapData[w].phase === phase);
+
+            const weekSelectorHTML = `
+                <div class="flex flex-wrap justify-center gap-2 mb-8">
+                    ${weeksInPhase.map(week => `
+                        <button data-week="${week}" class="week-button text-sm sm:text-base font-semibold py-2 px-4 rounded-lg shadow-sm transition-all duration-200 ease-in-out ${parseInt(week) === currentWeek ? 'week-button-active' : 'bg-white hover:bg-slate-100'}">
+                            Week ${week}
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+            
+            const weekData = roadmapData[currentWeek];
+
+            const contentHTML = `
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                    <div class="text-center mb-6">
+                        <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Week ${currentWeek}: ${weekData.theme}</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex flex-col">
+                            <h3 class="text-xl font-semibold mb-3 text-slate-800">Weekly Project</h3>
+                            <p class="text-lg font-bold text-amber-600 mb-2">${weekData.project.title}</p>
+                            <p class="text-slate-600 flex-grow">${weekData.project.description}</p>
+                            <button onclick="openModal(${currentWeek})" class="mt-4 w-full bg-slate-800 text-white font-semibold py-2 px-4 rounded-lg hover:bg-slate-700 transition-colors">
+                                View Daily Plan
+                            </button>
+                        </div>
+
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                            <h3 class="text-xl font-semibold mb-3 text-slate-800">Key Technologies</h3>
+                            <div class="flex flex-wrap gap-3">
+                                ${weekData.tech.map(t => `
+                                    <span class="bg-white border border-slate-200 rounded-full px-4 py-2 text-sm font-medium text-slate-700 flex items-center gap-2">
+                                        <span>${techIcons[t] || '⚙️'}</span>
+                                        ${t}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-2 bg-slate-50 p-6 rounded-xl border border-slate-200">
+                            <h3 class="text-xl font-semibold mb-3 text-center text-slate-800">Weekly Focus Distribution</h3>
+                            <div class="chart-container">
+                                <canvas id="focusChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            contentContainer.innerHTML = weekSelectorHTML + contentHTML;
+            
+            document.querySelectorAll('.week-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    currentWeek = parseInt(e.target.dataset.week);
+                    renderPhaseContent(phase);
+                });
+            });
+
+            renderFocusChart(weekData.focus);
+        }
+
+        function renderFocusChart(data) {
+            const ctx = document.getElementById('focusChart').getContext('2d');
+            if (focusChart) {
+                focusChart.destroy();
+            }
+            focusChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Backend', 'Frontend', 'AI/ML', 'DSA', 'System Design'],
+                    datasets: [{
+                        label: 'Focus Level',
+                        data: data,
+                        backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                        borderColor: 'rgba(245, 158, 11, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(245, 158, 11, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(245, 158, 11, 1)'
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                            grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                            pointLabels: { font: { size: 14 } },
+                            suggestedMin: 0,
+                            suggestedMax: 5,
+                            ticks: {
+                                stepSize: 1,
+                                backdropColor: 'transparent'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+        
+        function openModal(weekNumber) {
+            const weekData = roadmapData[weekNumber];
+            modalTitle.textContent = `Daily Plan - Week ${weekNumber}: ${weekData.theme}`;
+            
+            const dailyPlanHTML = weekData.dailyPlan.map(day => `
+                <div class="py-4 border-b border-slate-200 last:border-b-0 grid grid-cols-1 md:grid-cols-12 gap-4">
+                    <div class="md:col-span-2">
+                        <p class="font-bold text-amber-600">Day ${day.day}</p>
+                    </div>
+                    <div class="md:col-span-10">
+                        <p class="font-semibold text-slate-800">📚 What to Learn:</p>
+                        <p class="text-slate-600 mb-2">${day.learn}</p>
+                        ${day.dsa ? `<p class="font-semibold text-slate-800">💻 DSA Focus:</p><p class="text-slate-600">${day.dsa}</p>` : ''}
+                        ${day.sys ? `<p class="font-semibold text-slate-800">🏗️ System Design Focus:</p><p class="text-slate-600">${day.sys}</p>` : ''}
+                        ${day.behavioral ? `<p class="font-semibold text-slate-800">🗣️ Behavioral Focus:</p><p class="text-slate-600">${day.behavioral}</p>` : ''}
+                        ${day.resources && day.resources.length > 0 ? `
+                            <div class="mt-3">
+                                <p class="font-semibold text-slate-800">🔗 Learning Resources:</p>
+                                <ul class="list-disc list-inside text-slate-600 mt-1 space-y-1">
+                                    ${day.resources.map(res => `<li><a href="${res.url}" target="_blank" rel="noopener noreferrer" class="text-sky-600 hover:underline">${res.title}</a></li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+
+            modalBody.innerHTML = dailyPlanHTML;
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.querySelector('.modal-content').classList.remove('scale-95');
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.querySelector('.modal-content').classList.add('scale-95');
+        }
+
+        phaseTabs.forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                const phase = parseInt(e.target.dataset.phase);
+                phaseTabs.forEach(t => t.classList.remove('tab-active'));
+                e.target.classList.add('tab-active');
+                
+                // Set currentWeek to the first week of the selected phase
+                if (phase === 1) currentWeek = 1;
+                if (phase === 2) currentWeek = 5;
+                if (phase === 3) currentWeek = 9;
+
+                renderPhaseContent(phase);
+            });
+        });
+
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPhaseContent(1);
+        });
+    </script>
+</body>
+</html>
