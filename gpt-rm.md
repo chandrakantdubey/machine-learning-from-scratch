@@ -1,7 +1,3 @@
-Here’s the **first half of your 52-week roadmap** for becoming an employable **Full-Stack Machine Learning Engineer**. I’ve turned each week into a **study + project cycle** with hand-picked free resources, datasets, and GitHub repos.
-
----
-
 # 🚀 52-Week Full-Stack ML Engineer Bootcamp (Weeks 1–26)
 
 ## 📌 Phase 1: Core Foundations (Weeks 1–8)
